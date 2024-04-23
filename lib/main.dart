@@ -1,6 +1,5 @@
 // import 'register_screens/forget_password.dart';
 import 'register_screens/login.dart';
-
 import 'package:flutter/material.dart';
 import 'onboarding.dart';
 import 'register_screens/signup_screen.dart';
@@ -13,7 +12,7 @@ void main() {
       title: 'Wasta',
       routes: {
         '/signup': (context) =>
-            const SignUp(), // Define route for the sign-up page
+            const Signup(), // Define route for the sign-up page
         '/login': (context) => const Login(),
       },
     ),

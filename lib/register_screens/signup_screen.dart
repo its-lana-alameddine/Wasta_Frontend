@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/NavigationBar.dart';
-import '../widgets/PasswordField.dart';
 import 'login.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({Key? key}) : super(key: key);
+class Signup extends StatelessWidget {
+  const Signup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +10,27 @@ class SignUp extends StatelessWidget {
         const Color(0xFFF8F1F1); // Define hex color inside the build method
     Color darkbluehex = const Color(0xFF130160);
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Login()),
+            ),
+            child: const Text(
+              'Login',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         // Wrap your Column with SingleChildScrollView
         child: Container(
@@ -73,7 +92,7 @@ class SignUp extends StatelessWidget {
                       const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Full Name',
+                          'Username',
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.black,
@@ -99,7 +118,7 @@ class SignUp extends StatelessWidget {
                                   fontFamily: 'DM Sans',
                                 ),
                                 decoration: InputDecoration(
-                                  labelText: 'Enter Your Name',
+                                  labelText: 'Enter Your Username',
                                   border: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.symmetric(horizontal: 16.0),
@@ -115,7 +134,7 @@ class SignUp extends StatelessWidget {
                       const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Phone Number',
+                          'Skills',
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.black,
@@ -141,7 +160,7 @@ class SignUp extends StatelessWidget {
                                   fontFamily: 'DM Sans',
                                 ),
                                 decoration: InputDecoration(
-                                  labelText: 'Enter your phone number',
+                                  labelText: 'Enter your skills',
                                   border: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.symmetric(horizontal: 16.0),
@@ -206,7 +225,7 @@ class SignUp extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5.0),
-                      const PasswordField(),
+                      // PasswordField(context: context),
                       const SizedBox(height: 26.0),
                       // Forgot Password text
 
@@ -263,42 +282,37 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                height: 50,
-                color: Colors.white,
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic.png'),
-                    ),
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic 1.png'),
-                    ),
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic 2.png'),
-                    ),
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic 3.png'),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        // Your custom color
+        type: BottomNavigationBarType
+            .fixed, // Use fixed when having more than three items
+        items: [
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic 1.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic 2.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic 3.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          // Add your settings icon as necessary
+        ],
       ),
     );
   }

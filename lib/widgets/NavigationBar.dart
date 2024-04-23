@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatelessWidget {
-  const NavigationBar({Key? key}) : super(key: key);
+  const NavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class NavigationBar extends StatelessWidget {
 class LogoWidget extends StatelessWidget {
   final String imagePath;
 
-  const LogoWidget({Key? key, required this.imagePath}) : super(key: key);
+  const LogoWidget({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {

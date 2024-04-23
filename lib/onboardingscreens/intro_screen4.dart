@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:new_try/onboardingscreens/intro_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen4 extends StatelessWidget {
   const IntroScreen4({super.key});
@@ -107,7 +110,10 @@ class IntroScreen4 extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Intro_Button(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    await prefs.setBool('entrypoint', true);
                                     Navigator.pushReplacementNamed(
                                         context, '/signup');
                                   },

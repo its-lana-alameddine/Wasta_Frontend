@@ -1,12 +1,12 @@
-// ignore_for_file: file_names
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatefulWidget {
-  const PasswordField({Key? key}) : super(key: key);
+  final TextEditingController controller;
+  const PasswordField({super.key, required this.controller});
 
   @override
-  // ignore: library_private_types_in_public_api
   _PasswordFieldState createState() => _PasswordFieldState();
 }
 
@@ -27,6 +27,7 @@ class _PasswordFieldState extends State<PasswordField> {
           alignment: Alignment.centerRight,
           children: [
             TextField(
+              controller: widget.controller, // Pass the controller
               obscureText: !_isPasswordVisible,
               style: const TextStyle(
                 fontSize: 18.0,

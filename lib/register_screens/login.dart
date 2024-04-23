@@ -1,11 +1,16 @@
+// ignore_for_file: unused_local_variable, unused_import, no_leading_underscores_for_local_identifiers, use_build_context_synchronously, avoid_print, prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
+import '../api/google_signin_api.dart';
+import '../models/request/auth/login_model.dart';
+import '../services/helpers/auth_helper.dart';
 import 'signup_screen.dart';
 
 import '../widgets/NavigationBar.dart';
-import '../widgets/PasswordField.dart';
+import '../widgets/password_field.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +18,93 @@ class Login extends StatelessWidget {
         const Color(0xFFF8F1F1); // Define hex color inside the build method
     Color darkbluehex = const Color(0xFF130160);
     Color linkedinBlue = const Color(0xFF0088CF);
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    void _login() async {
+      String email = emailController.text.trim();
+      String password = passwordController.text.trim();
+
+      if (email.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter your email and password.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // Call the login function from AuthHelper
+      bool loggedIn = await AuthHelper.login(
+        LoginModel(email: email, password: password),
+      );
+
+      if (loggedIn) {
+        // Navigate to the next screen on successful login
+        // SignUp is the screen to navigate to
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Signup()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('loggedIn successfully, Welcome!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login failed. Please recheck your credentials'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+
+    Future signIn() async {
+      final user = await GoogleSignInApi.login();
+
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Sign In With Google Failed'),
+          backgroundColor: Colors.red,
+        ));
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const Signup()));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('loggedIn successfully, Welcome!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Signup()),
+            ),
+            child: const Text(
+              'Signup',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         // Wrap your Column with SingleChildScrollView
         child: Container(
@@ -91,16 +182,17 @@ class Login extends StatelessWidget {
                         ),
                         height: 58.55,
                         width: 317,
-                        child: const Row(
+                        child: Row(
                           children: [
                             Expanded(
                               child: TextField(
-                                style: TextStyle(
+                                controller: emailController,
+                                style: const TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontFamily: 'DM Sans',
                                 ),
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: 'Enter your email',
                                   border: InputBorder.none,
                                   contentPadding:
@@ -125,7 +217,7 @@ class Login extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5.0),
-                      const PasswordField(),
+                      PasswordField(controller: passwordController),
                       const SizedBox(height: 5.0),
                       // Forgot Password text
                       const Align(
@@ -142,7 +234,7 @@ class Login extends StatelessWidget {
                       SizedBox(
                         width: 317, // Set the desired width here
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: _login,
                           height: 49,
                           color: darkbluehex,
                           shape: RoundedRectangleBorder(
@@ -174,7 +266,7 @@ class Login extends StatelessWidget {
                             width: 317,
                             height: 49,
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: signIn,
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
@@ -188,8 +280,10 @@ class Login extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Image.asset('assets/images/google.png',
-                                            width: 23, height: 23),
+                                        Image.asset(
+                                            'assets/images/facebook.png',
+                                            width: 23,
+                                            height: 23),
                                         const SizedBox(width: 8),
                                         const Text(
                                           "Google",
@@ -264,7 +358,7 @@ class Login extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const SignUp()),
+                                        builder: (context) => const Signup()),
                                   );
                                 },
                                 child: const Text(
@@ -283,42 +377,37 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                height: 50,
-                color: Colors.white,
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic.png'),
-                    ),
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic 1.png'),
-                    ),
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic 2.png'),
-                    ),
-                    SizedBox(
-                      width: 22.83,
-                      height: 24.5,
-                      child: LogoWidget(
-                          imagePath: 'assets/icons/Pasted Graphic 3.png'),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        // Your custom color
+        type: BottomNavigationBarType
+            .fixed, // Use fixed when having more than three items
+        items: [
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic 1.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic 2.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/Pasted Graphic 3.png',
+                width: 22.83, height: 24.5),
+            label: ' ',
+          ),
+          // Add your settings icon as necessary
+        ],
       ),
     );
   }
